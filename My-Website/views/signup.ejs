@@ -1,0 +1,118 @@
+<%- include('mainSiteHeader') %>
+
+  <body id="myPage" data-spy="scroll" data-target=".navbar" data-offset="60">
+
+    <nav class="navbar navbar-default navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a href="/" class="navbar-brand animated bounceInLeft"><b>Demo Website</b></a>
+        </div>
+        <div class="collapse navbar-collapse" id="myNavbar">
+          <ul class="nav navbar-nav">
+          </ul>
+          <ul class="nav navbar-nav navbar-right">
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <div class="container-fluid" data-aos="fade-right">
+      <h3 class="text-center">
+        <%= title %>
+      </h3>
+      <div class="row">
+        <div id="signupbox" style="margin-top:30px" class="mainbox col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2">
+          <div class="panel panel-info">
+            <div class="panel-heading text-center">
+              <div class="panel-title">Sign Up Form</div>
+            </div>
+            <div class="panel-body">
+              <form action="/signup" id="SignupForm" class="form-horizontal" method="post" role="form">
+
+                <div id="signupalert" style="display:none" class="alert alert-danger">
+                  <p>Error:</p>
+                  <span></span>
+                </div>
+
+                <div class="form-group">
+                  <label for="fullname" class="col-md-3 control-label">Name :</label>
+                  <div class="col-md-9">
+                    <input type="text" class="form-control" name="name" placeholder="Enter Your Name" required>
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label for="gender" class="col-md-3 control-label">Gender :</label>
+                  <div class="col-md-9">
+                    <select class="form-control" name="gender">
+                      <option value="male">Male</option>
+                      <option value="female">Female</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label for="address" class="col-md-3 control-label">Address :</label>
+                  <div class="col-md-9">
+                    <input type="text" class="form-control" name="address" placeholder="Address">
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label for="email" class="col-md-3 control-label">Email :</label>
+                  <div class="col-md-9">
+                    <input type="email" class="form-control" name="email" placeholder="Email Address" required>
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label for="pwd" class="col-md-3 control-label">Password :</label>
+                  <div class="col-md-9">
+                    <input type="password" class="form-control" name="pwd" placeholder="Password" required>
+                  </div>
+                </div>
+
+                <% if (message=="Sign up successful. Please click on login button." ) { %>
+                  <div class="form-group">
+                    <div class="col-md-offset-3 col-md-9">
+                      <div class="alert alert-success alert-dismissible">
+                        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                        <strong>Success!</strong>
+                        <%= message %>
+                      </div>
+                    </div>
+                  </div>
+                  <% } else if (message=="User already exists. Please login." ) { %>
+                    <div class="form-group">
+                      <div class="col-md-offset-3 col-md-9">
+                        <div class="alert alert-danger alert-dismissible">
+                          <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                          <strong></strong>
+                          <%= message %>
+                        </div>
+                      </div>
+                    </div>
+                    <% } %>
+
+                      <div class="form-group">
+                        <!-- Buttons-->
+                        <div class="col-md-offset-3 col-md-9">
+                          <input type="submit" name="signup" value="Sign Up" class="btn btn-primary btn-lg">
+                          <!--<button type="submit" class="btn btn-primary btn-lg">Sign Up</button>-->
+                          <a href="/" class="btn btn-success btn-lg" role="button">Login</a>
+                        </div>
+                      </div>
+
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <%- include('footer') %>

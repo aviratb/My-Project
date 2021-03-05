@@ -1,0 +1,21 @@
+{
+  "name": "project1",
+  "version": "1.0.0",
+  "description": "My first express project",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Avirat Bhadani",
+  "license": "ISC",
+  "dependencies": {
+    "aos": "^2.3.4",
+    "ejs": "^3.1.5",
+    "express": "^4.17.1",
+    "express-validator": "^6.9.2",
+    "mongoose": "^5.11.13",
+    "pug": "^3.0.0",
+    "twig": "^1.15.4"
+  }
+}
