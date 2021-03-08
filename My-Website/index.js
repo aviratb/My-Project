@@ -8,6 +8,7 @@ const site = require('./routes/site');
 const signup = require('./routes/signup');
 const employeesRecords = require('./routes/employees_records');
 const game = require('./routes/game');
+const usersPosts = require('./routes/users_posts');
 const players = require('./routes/players');
 
 // view engine setup
@@ -25,6 +26,7 @@ app.use('/', site);
 app.use('/signup', signup);
 app.use('/employees_records', employeesRecords);
 app.use('/game', game);
+app.use('/users_posts', usersPosts);
 app.use('/players', players);
 
 app.listen(port, () => {

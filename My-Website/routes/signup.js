@@ -2,6 +2,11 @@ const express = require('express');
 const router = express.Router();
 const signedupModel = require('../modules/signedupuser');
 const signedupuser = signedupModel.find({});
+var msg = ["",
+    "User already exists. Please login.",
+    "Sign up successful. Please click on login button."
+];
+var flag = 0;
 
 var signupValidation = (req, res, next) => {
     signedupuser.exec((err, data) => {
@@ -10,10 +15,8 @@ var signupValidation = (req, res, next) => {
         var i;
         for (i = 0; i < data.length; i++) {
             if (req.body.email == data[i].email) {
-                return res.render('signup', {
-                    title: 'Sign Up Page',
-                    message: 'User already exists. Please login.'
-                });
+                flag = 1;
+                return res.redirect('/signup');
             }
         }
         const signedupusers = new signedupModel({
@@ -34,14 +37,13 @@ var signupValidation = (req, res, next) => {
 router.get('/', (req, res) => {
     res.render('signup', {
         title: 'Sign Up Page',
-        message: ''
+        message: msg[flag]
     });
+    flag = 0;
 });
 router.post('/', signupValidation, (req, res) => {
-    res.render('signup', {
-        title: 'Sign Up Page',
-        message: 'Sign up successful. Please click on login button.'
-    });
+    flag = 2;
+    res.redirect('/signup');
 });
 
 module.exports = router;

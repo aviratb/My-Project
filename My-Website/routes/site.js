@@ -3,7 +3,10 @@ const router = express.Router();
 const signedupModel = require('../modules/signedupuser');
 const signedupuser = signedupModel.find({});
 var name;
-var contactName1 = '';
+var msg = ["",
+    "Invalid email id or password."
+];
+var flag = 0;
 
 var loginValidation = (req, res, next) => {
     signedupuser.exec((err, data) => {
@@ -16,28 +19,26 @@ var loginValidation = (req, res, next) => {
                 return next();
             }
         }
-        res.render('site', {
-            titleLogin: 'Sign Up/Login',
-            messageLogin: 'Invalid email id or password.',
-            name1 : ''
-        });
+        flag = 1;
+        res.redirect('/');
     });
 }
 
 router.get('/', (req, res) => {
     res.render('site', {
         titleLogin: 'Sign Up/Login',
-        messageLogin: '',
-        name1 : contactName1
+        messageLogin: msg[flag]
     });
+    flag = 0;
 });
 router.post('/', loginValidation, (req, res) => {
     res.redirect('/dashboard');
 });
+
 router.post('/temp', (req, res) => {
-    contactName1 = req.body.name1;
     res.redirect('/#contactUs');
 });
+
 router.get('/dashboard', (req, res) => {
     res.render('dashboard', {
         title: `${name}`,
