@@ -1,0 +1,146 @@
+<%- include('header') %>
+
+    <div class="container-fluid text-center">
+        <div class="row content">
+
+            <div class="col-sm-2 sidenav">
+                <div class="well">
+                    <p><a href="/users/orders">Place your order</a></p>
+                </div>
+            </div>
+
+            <div class="col-sm-8 text-left">
+                <div class="jumbotron text-center">
+                    <div data-aos="fade-up">
+                        <h1>
+                            <%= title %>
+                        </h1>
+                    </div>
+                </div>
+                <hr>
+                <div class="row">
+                    <div id="signupbox" class="mainbox col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2">
+                        <div class="panel panel-info">
+                            <div class="panel-heading text-center">
+                                <div class="panel-title">Customer Order Form</div>
+                            </div>
+                            <div class="panel-body">
+                                <form action="/users/orders" id="employeeForm" class="form-horizontal" method="post"
+                                    role="form">
+
+                                    <div id="signupalert" style="display:none" class="alert alert-danger">
+                                        <p>Error:</p>
+                                        <span></span>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="firstname" class="col-md-4 control-label">Name :</label>
+                                        <div class="col-md-7">
+                                            <input type="text" class="form-control" name="customerName"
+                                                placeholder="Enter your name" required>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="lastname" class="col-md-4 control-label">Product :</label>
+                                        <div class="col-md-7">
+                                            <select class="form-control" name="product" required>
+                                                <option value="Kinley 20L Jar">Kinley 20L Jar</option>
+                                                <option value="Bisleri 250ML Carton">Bisleri 250ML Carton</option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="firstname" class="col-md-4 control-label">Quantity :</label>
+                                        <div class="col-md-7">
+                                            <input type="number" class="form-control" name="quantity"
+                                                placeholder="Enter quantity required" required>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="lastname" class="col-md-4 control-label">Location :</label>
+                                        <div class="col-md-7">
+                                            <select class="form-control" name="warehouse" required>
+                                                <option value="Mumbai North">Mumbai North</option>
+                                                <option value="Mumbai South">Mumbai South</option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <!--<% if (success=="Record Inserted Successfully." || success=="Record Updated Successfully." ) { %>
+                    <div class="form-group">
+                      <div class="col-md-offset-3 col-md-9">
+                        <div class="alert alert-success alert-dismissible">
+                          <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                          <strong>Success!</strong>
+                          <%= success %>
+                        </div>
+                      </div>
+                    </div>
+                    <% } else if (success=="Duplicate data cannot be inserted." ) { %>
+                      <div class="form-group">
+                        <div class="col-md-offset-3 col-md-9">
+                          <div class="alert alert-warning alert-dismissible">
+                            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                            <strong>Sorry!</strong>
+                            <%= success %>
+                          </div>
+                        </div>
+                      </div>
+                      <% } else if (success=="Record Deleted." ) { %>
+                        <div class="form-group">
+                          <div class="col-md-offset-3 col-md-9">
+                            <div class="alert alert-danger alert-dismissible">
+                              <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                              <strong></strong>
+                              <%= success %>
+                            </div>
+                          </div>
+                        </div>
+                        <% } %>-->
+                                    <div class="form-group">
+                                        <div class="col-md-offset-4 col-md-9">
+                                            <h5 class="msgGame">
+                                                <%= error %>
+                                            </h5>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <!-- Button -->
+                                        <div class="col-md-offset-4 col-md-9">
+                                            <input type="submit" name="order" value="Place your Order"
+                                                class="btn btn-primary">
+                                        </div>
+                                    </div>
+
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <br id="lineBreak"><br><br><br>
+                <div class="msgGame">Your Orders.....</div> <br>
+                <% orders.forEach(function(row){ %>
+                    <div class="col-sm-4 well">
+                        Name : <%= row.customerName %> <br>
+                            Product : <%= row.product %> <br>
+                                Quantity : <%= row.quantity %> <br>
+                                    Status : <%= row.status %> <br>
+                                        <button class="btn btn-danger" role="button"
+                                            href="/users/orders/cancel/<%= row._id %>">Cancel</button>
+                    </div>
+                    <% }) %>
+            </div>
+
+            <div class="col-sm-2 sidenav">
+                <div class="well">
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <%- include('footer') %>

@@ -41,7 +41,7 @@ $(document).ready(function () {
             });
         }
     });
-    
+
     // Animation on scroll
     $(window).on('load', function () {
         AOS.init({
@@ -79,5 +79,9 @@ $(document).ready(function () {
             $("#contactUsForm #sendBtn").click();
         });
     });
+
+    /*$(document).on('click', '#abc', function () {
+        $('#abc').attr('disabled', true);
+    }); */
 });
 
