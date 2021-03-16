@@ -1,4 +1,5 @@
 const express = require('express');
+const jwt = require('jsonwebtoken');
 const router = express.Router();
 const mongoose = require('mongoose');
 const productModel = require('../modules/product');
@@ -6,7 +7,22 @@ const product = productModel.find({});
 const orderModel = require('../modules/order');
 const order = orderModel.find({});
 
-router.get('/', (req, res) => {
+if (typeof localStorage === "undefined" || localStorage === null) {
+    var LocalStorage = require('node-localstorage').LocalStorage;
+    localStorage = new LocalStorage('./scratch');
+}
+
+const checkLogin = (req, res, next) => {
+    var myToken = localStorage.getItem('myToken');
+    try {
+        jwt.verify(myToken, 'loginToken');
+    } catch (err) {
+        return res.send("You are not logged in. Please login to access this page....");
+    }
+    next();
+}
+
+router.get('/', checkLogin, (req, res) => {
     res.render('users', {
         title: 'Users Panel'
     });
@@ -57,7 +73,7 @@ var middleware = (req, res, next) => {
     });
 }
 
-router.get('/orders', (req, res) => {
+router.get('/orders', checkLogin, (req, res) => {
     order.exec((err, data) => {
         if (err)
             throw err;
@@ -66,11 +82,10 @@ router.get('/orders', (req, res) => {
             orders: data,
             success: "",
             error: "",
-            new: ""
         });
     });
 });
-router.post('/orders', middleware, (req, res) => {
+router.post('/orders', middleware, checkLogin, (req, res) => {
     order.exec((err, data) => {
         if (err)
             throw err;
@@ -78,14 +93,12 @@ router.post('/orders', middleware, (req, res) => {
             title: 'Order Details',
             orders: data,
             success: "",
-            error: "Sorry, Quantity greater than available in stock. Please enter lesser quantity.",
-            new: ""
+            error: "Sorry, Quantity greater than available in stock. Please enter lesser quantity."
         });
     });
-
 });
 
-router.get('/orders/cancel/:id', (req, res) => {
+router.get('/orders/cancel/:id', checkLogin, (req, res) => {
     var id = req.params.id;
     const cancel = orderModel.findById(id);
     cancel.exec((err, data) => {
@@ -118,14 +131,7 @@ router.get('/orders/cancel/:id', (req, res) => {
                 if (err)
                     throw err;
                 res.redirect('/users/orders');
-                res.render('usersOrderDetails', {
-                    title: 'Order Details',
-                    orders: data,
-                    success: "",
-                    error: "",
-                    new: "cancelled"
-                });
-            })
+            });
         });
     });
 });

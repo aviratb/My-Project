@@ -1,4 +1,5 @@
 const express = require('express');
+const jwt = require('jsonwebtoken');
 const router = express.Router();
 const employeeModel = require('../modules/employee');
 const employee = employeeModel.find({});
@@ -10,7 +11,22 @@ var msg = ["",
 ];
 var flag = 0;
 
-router.get('/', (req, res) => {
+if (typeof localStorage === "undefined" || localStorage === null) {
+    var LocalStorage = require('node-localstorage').LocalStorage;
+    localStorage = new LocalStorage('./scratch');
+}
+
+const checkLogin = (req, res, next) => {
+    var myToken = localStorage.getItem('myToken');
+    try {
+        jwt.verify(myToken, 'loginToken');
+    } catch (err) {
+        return res.send("You are not logged in. Please login to access this page....");
+    }
+    next();
+}
+
+router.get('/', checkLogin, (req, res) => {
     employee.exec((err, data) => {
         if (err)
             throw err;
@@ -50,7 +66,7 @@ router.post('/', (req, res) => {
     });
 });
 
-router.get('/edit/:id', (req, res) => {
+router.get('/edit/:id', checkLogin, (req, res) => {
     var id = req.params.id;
     const edit = employeeModel.findById(id);
     edit.exec((err, data) => {

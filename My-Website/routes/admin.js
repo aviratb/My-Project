@@ -1,4 +1,5 @@
 const express = require('express');
+const jwt = require('jsonwebtoken');
 const router = express.Router();
 const mongoose = require('mongoose');
 const productModel = require('../modules/product');
@@ -6,13 +7,28 @@ const product = productModel.find({});
 const orderModel = require('../modules/order');
 const order = orderModel.find({});
 
-router.get('/', (req, res) => {
+if (typeof localStorage === "undefined" || localStorage === null) {
+    var LocalStorage = require('node-localstorage').LocalStorage;
+    localStorage = new LocalStorage('./scratch');
+}
+
+const checkLogin = (req, res, next) => {
+    var myToken = localStorage.getItem('myToken');
+    try {
+        jwt.verify(myToken, 'loginToken');
+    } catch (err) {
+        return res.send("You are not logged in. Please login to access this page....");
+    }
+    next();
+}
+
+router.get('/', checkLogin, (req, res) => {
     res.render('admin', {
         title: 'Admin Panel'
     });
 });
 
-router.get('/products', (req, res) => {
+router.get('/products', checkLogin, (req, res) => {
     product.exec((err, data) => {
         if (err)
             throw err;
@@ -58,7 +74,7 @@ router.post('/products', (req, res) => {
     });
 });
 
-router.get('/orders', (req, res) => {
+router.get('/orders', checkLogin, (req, res) => {
     order.exec((err, data) => {
         if (err)
             throw err;
